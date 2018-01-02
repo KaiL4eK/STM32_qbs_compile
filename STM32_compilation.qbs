@@ -100,13 +100,10 @@ Project {
                     ]
 
         cpp.linkerFlags: [
-//                    "--specs=nosys.specs",
                     "--gc-sections",
                     "--no-warn-mismatch",
                     "--defsym=__process_stack_size__=0x400",
                     "--defsym=__main_stack_size__=0x400",
-//                    "-mno-thumb-interwork", "-mthumb",
-//                    "--cref",
                     "--script=" + startupLdScript,
                     ]
 
