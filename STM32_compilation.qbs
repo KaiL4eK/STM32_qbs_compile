@@ -6,7 +6,7 @@ Project {
     CppApplication {
         consoleApplication: true
 
-        property path chRoot: "/home/alex/Dev/ChibiOS"
+        property path chRoot: "/home/alexey/Programms/ChibiOS"
         property path startupLd: chRoot + "/os/common/startup/ARMCMx/compilers/GCC/ld"
         property string startupLdScript: "STM32F103x8.ld"
         property string coreName: "STM32F1xx"
@@ -78,19 +78,43 @@ Project {
             return output;
         }
 
-        cpp.cFlags: ["-mcpu=cortex-m3", "-mthumb",
-                     "-fno-builtin", "-std=c99", "-pipe", "-Wall", "-O2",
-                     "-ggdb", "-fomit-frame-pointer", "-falign-functions=16",
-                     "-Wall", "-Wextra", "-Wundef", "-Wstrict-prototypes",
-                     "-mno-thumb-interwork"
+        property stringList commonOptions: [
+                    ""
                     ]
 
-        cpp.linkerFlags: ["--specs=nosys.specs",
-                          "-mcpu=cortex-m3",
-                          "-T " + startupLdScript,
-                          "-L " + startupLd]
+        qbs.optimization: "fast"
 
-        cpp.defines: ["THUMB"]
+        cpp.driverFlags: [
+                    "-mcpu=cortex-m3", "-mthumb",
+//                    "-fno-builtin",
+                    "-O2",
+                    "-fno-common", "-flto", "-ffunction-sections", "-fdata-sections",
+
+                    "-ggdb", "-fomit-frame-pointer", "-falign-functions=16",
+                    "-Wall", "-Wextra", "-Wundef", "-Wstrict-prototypes",
+                    "-mno-thumb-interwork", "-MD", "-MP", "-nostartfiles"
+                    ]
+
+        cpp.libraryPaths: [
+                    startupLd
+                    ]
+
+        cpp.linkerFlags: [
+//                    "--specs=nosys.specs",
+                    "--gc-sections",
+                    "--no-warn-mismatch",
+                    "--defsym=__process_stack_size__=0x400",
+                    "--defsym=__main_stack_size__=0x400",
+//                    "-mno-thumb-interwork", "-mthumb",
+//                    "--cref",
+                    "--script=" + startupLdScript,
+                    ]
+
+        cpp.defines: [
+                    "THUMB", "THUMB_NO_INTERWORKING", "THUMB_PRESENT",
+                    "CORTEX_USE_FPU=FALSE",
+                    "CH_USE_REGISTRY=TRUE"
+                    ]
 
         cpp.executableSuffix: ".elf"
         cpp.positionIndependentCode: false
