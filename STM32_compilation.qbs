@@ -30,7 +30,12 @@ Project {
                 chRoot + "/os/hal/ports/STM32/LLD/TIMv1",
                 chRoot + "/os/hal/ports/STM32/LLD/USARTv1",
                 chRoot + "/os/hal/ports/STM32/LLD/USBv1",
-                chRoot + "/os/hal/ports/STM32/LLD/xWDGv1"
+                chRoot + "/os/hal/ports/STM32/LLD/xWDGv1",
+                // Optional - shell
+                chRoot + "/os/various/shell",
+                // Test - required for shell
+                chRoot + "/test/lib",
+                chRoot + "/test/rt/source/test",
                 ]
 
         files: {
@@ -67,7 +72,8 @@ Project {
                 chRoot + "/os/hal/ports/STM32/" + coreName + "/hal_adc_lld.c",
                 // Optional - streams
                 chRoot + "/os/hal/lib/streams/*.c",
-                chRoot + "/os/hal/lib/streams/*.h"
+                chRoot + "/os/hal/lib/streams/*.h",
+
                   ]
 
             var index;
