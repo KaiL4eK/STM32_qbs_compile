@@ -42,9 +42,9 @@ Project {
                 chRoot + "/os/common/startup/ARMCMx/compilers/GCC/vectors.c",
                 chRoot + "/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S",
                 chRoot + "/os/common/startup/ARMCMx/compilers/GCC/*.h",
-                chRoot + "/os/common/startup/ARMCMx/devices/STM32F1xx/*.h",
-                chRoot + "/os/common/ext/ARM/CMSIS/Core/Include/*.h",
-                chRoot + "/os/common/ext/ST/" + coreName + "/*.h",
+                chRoot + "/os/common/startup/ARMCMx/devices/" + coreName + "/*.h",
+                chRoot + "/os/common/ext/CMSIS/include/*.h",
+                chRoot + "/os/common/ext/CMSIS/ST/" + coreName + "/*.h",
                 // hal.mk
                 chRoot + "/os/hal/include/*.h",
                 chRoot + "/os/hal/src/*.c",
@@ -63,9 +63,11 @@ Project {
                 chRoot + "/os/hal/ports/common/ARMCMx/*.h",
                 chRoot + "/os/hal/ports/STM32/" + coreName + "/*.h",
                 chRoot + "/os/hal/ports/common/ARMCMx/nvic.c",
-                chRoot + "/os/hal/ports/STM32/" + coreName + "/stm32_isr.c",
                 chRoot + "/os/hal/ports/STM32/" + coreName + "/hal_lld.c",
                 chRoot + "/os/hal/ports/STM32/" + coreName + "/hal_adc_lld.c",
+                // Optional - streams
+                chRoot + "/os/hal/lib/streams/*.c",
+                chRoot + "/os/hal/lib/streams/*.h"
                   ]
 
             var index;
