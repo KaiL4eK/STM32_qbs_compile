@@ -14,10 +14,9 @@ static THD_FUNCTION(Blinker, arg)
     while (true)
     {
         palTogglePad(GPIOC, GPIOC_LED);
-        chThdSleepSeconds(1);
+        chThdSleepMilliseconds(100);
     }
 }
-
 
 static THD_WORKING_AREA(waSerialSender, 128);
 static THD_FUNCTION(SerialSender, arg)
@@ -29,7 +28,17 @@ static THD_FUNCTION(SerialSender, arg)
     {
         chprintf((BaseSequentialStream *)&SD2, "test from %s\n", chThdGetSelfX()->name);
         chThdSleepSeconds(2);
+
+//        chSysLock();
+//        gptPolledDelay(&GPTD1, 20000);
+//        chSysUnlock();
     }
+}
+
+void gpt_callback(GPTDriver *gptp)
+{
+    (void *)gptp;
+    palTogglePad(GPIOC, 14);
 }
 
 /******************************/
@@ -119,6 +128,20 @@ int main(void)
     palSetPadMode( GPIOB, 0, PAL_MODE_STM32_ALTERNATE_PUSHPULL );   // PWM3/3
     pwmEnableChannel(&PWMD3, 3, 500);
     palSetPadMode( GPIOB, 1, PAL_MODE_STM32_ALTERNATE_PUSHPULL );   // PWM3/4
+
+    /******************************/
+    /*             GPT            */
+    /******************************/
+
+    static GPTConfig gptcfg =
+    {
+        100000,                     /* timer clock = 100kHz*/
+        gpt_callback,               /* Timer callback.*/
+        0, 0
+    };
+    gptStart(&GPTD4, &gptcfg);
+    gptStart(&GPTD1, &gptcfg);
+    gptStartContinuous(&GPTD4, 1000);
 
     /******************************/
     /*          Threads           */
